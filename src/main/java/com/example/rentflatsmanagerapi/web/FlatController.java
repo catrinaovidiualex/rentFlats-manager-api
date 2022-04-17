@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 @RestController
 @CrossOrigin
@@ -55,11 +56,23 @@ public class FlatController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteFlats(@PathVariable Long id){
 
-
-
         this.flatRepository.deleteById(id);
 
         return new ResponseEntity<>("a fost sters",HttpStatus.ACCEPTED);
     }
+
+    //endpoint pentru sortare carti
+    @GetMapping("/sortFlats")
+    public ResponseEntity<List<Flat>> sortFlats(){
+       List<Flat>flats=this.flatRepository.findAll();
+
+       Collections.sort(flats);
+
+       return  new ResponseEntity<>(flats,HttpStatus.ACCEPTED);
+
+
+
+    }
+
 
 }
