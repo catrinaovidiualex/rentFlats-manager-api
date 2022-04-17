@@ -2,6 +2,7 @@ package com.example.rentflatsmanagerapi.web;
 
 import com.example.rentflatsmanagerapi.model.Flat;
 import com.example.rentflatsmanagerapi.repository.FlatRepository;
+import com.example.rentflatsmanagerapi.services.FlatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class FlatController {
     private FlatRepository flatRepository;
+    private FlatService flatService;
 
     public FlatController(FlatRepository flatRepository) {
         this.flatRepository = flatRepository;
@@ -39,26 +41,17 @@ public class FlatController {
 
     //endpoint pentru update apartament
     @PutMapping("/update")
-    public ResponseEntity<String> updateFlats(@RequestBody Flat ft){
-    Flat flat = this.flatRepository.findById(ft.getId()).get();
+    public Flat UpdateFlat (@RequestBody Flat ft){
+    return flatService.updateFlat(ft);
 
-    flat.setTip(ft.getTip());
-    flat.setNrcam(ft.getNrcam());
-    flat.setPret(ft.getPret());
-    flat.setStatus(ft.getStatus());
-    this.flatRepository.save(flat);
 
-    return new ResponseEntity<>("a fost modificata",HttpStatus.ACCEPTED);
     }
 
     //delete
     //endpoint pentru stergere apartament
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteFlats(@PathVariable Long id){
-
-        this.flatRepository.deleteById(id);
-
-        return new ResponseEntity<>("a fost sters",HttpStatus.ACCEPTED);
+    public String deleteFlat(@PathVariable Long id){
+        return flatService.deleteFlatByID(id);
     }
 
     //endpoint pentru sortare carti
